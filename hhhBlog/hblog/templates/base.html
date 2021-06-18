@@ -1,0 +1,161 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'hhhBlog/css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'hhhBlog/css/scondnav.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'hhhBlog/boostrap/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'hhhBlog/boostrap/bootstrap.min.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/fonts/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+
+    <title>{% block title %}Healthy, Hungry, Hair{% endblock %}</title>
+  </head>
+  <body>
+    <div class="topnav">
+      <a class="active" href="{% url 'home'%}">Home</a>
+      <a href="{% url 'about'%}">About</a>
+      <a href="{% url 'work_with_me'%}">Work with me</a>
+      <a href="{% url 'contact'%}">Contact</a>
+      <div class="search-container">  
+        <form method="GET" action="{% url 'search' %}">
+          {% csrf_token %}
+          <input type="text" placeholder="Search.." name="search" >
+          <button type="submit" ><i class="fa fa-search"></i></button>
+        </form>
+      
+      </div>
+    </div>
+      
+   
+      
+      <script data-ad-client="ca-pub-8733294282103057" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="d-inline-block" id="know_more"><strong>Want to know more about HHH?</strong></p>
+                    <a href="https://pinterest.com/sophie"><i class="fa fa-pinterest-square" id="social"></i></a>
+                    <a href="https://instagram.com/sophie"><i class="fa fa-instagram" id="social"></i></a>
+                    <a href="https://youtube.com/sophie"><i class="fa fa-youtube-play" id="social"></i></a>
+                    <ul class="list-unstyled float-right" id="hview">
+                      {% if user.is_authenticated %}
+                      <li class="nav-item dropdown" id="hlview">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          {% if user.profile.profile_pic %}
+                            <img src="{{ user.profile.profile_pic.url}}" width="50" height="50" class="rounded-circle">
+                          {% else %}
+                            <img src="{% static 'hhhBlog/images/default_profile_pic.png' %}" width="50" height="50" class="rounded-circle">
+                
+                          {% endif %}
+                          
+                          {{user.first_name}} {{user.last_name}}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+          
+                          <a class="dropdown-item" href="{% url 'edit_profile' %}">Edit Settings</a>
+                          {% if user.profile.id %}
+                            <a class="dropdown-item" href="{% url 'edit_profile_page' user.profile.id %}">Edit Profile page</a>
+                            <a class="dropdown-item" href="{% url 'profile_page' user.profile.id %}">Show Profile</a>
+                          {% else %}
+                            <a class="dropdown-item" href="{% url 'create_profile_page' %}">Create Profile page</a>
+                          {% endif %}
+          
+                      
+                          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                       
+          
+                        </div>
+                      </li>
+                      {% if user.is_staff %}
+                      <li id="hlview">
+                        <a href="{% url 'add_post' %}">Add Post</a>
+                      </li>
+                      <li id="hlview">
+                        <a href="{% url 'add_category' %}">Add Category</a>
+
+                      </li>
+                     
+                      {% endif %}
+                      
+                    
+                        
+                        
+                        
+            
+                     
+
+                    {% else %}
+                    <a  href="{% url 'register' %}">
+                      <li id="hlview" class="subscribe">
+                      Sign Up
+                      </li></a>  
+                    <a  href="{% url 'login' %}">
+                      <li id="hlview">
+                      Sign in 
+                      </li></a> 
+                    
+                    {% endif %}
+
+                    
+                        
+                    </ul>
+                    <p class="brandname">Healthy Hungry Hair</p>
+                </div>
+            </div>
+        </div>
+      </div>
+    <hr class="mainhr"> 
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="align-self-center" id="cat">
+            {% if cat_menu %}
+              {% for item in cat_menu %}
+              
+              <a href="{% url 'category' item|slugify %}"><li class="catlist">{{ item|upper }}</li></a>
+              {% endfor %}
+            {% else %}
+         
+            <a href="{% url 'category_list' %}"><li class="catlist">CATEGORIES</li></a>
+            {% endif %}
+           
+            
+            
+            <a href="shop.html"><li class="catlist">SHOP</li></a>
+            <a href="review.html"><li class="catlist">REVIEW</li></a>
+          </ul>
+        </div>
+      </div>
+
+      {% block content %}
+
+      {% endblock %}
+
+
+    </div>
+
+    <footer>
+      <p class="text-center">HHH by Sophia Eshun</p>
+      <p class="text-center">2020</p>
+    </footer>
+    
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    
+  </body>
+</html>
